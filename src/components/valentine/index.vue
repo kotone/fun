@@ -36,7 +36,7 @@ const fullStyle = [
 * 如这个页面。就是个什么也没有的网页。
 * 我的工作就是给这种空白的页面加点儿东西。
 * 嗯。说起来手机和电脑还得区分一下。
-* 你现在用的是。。。${isPc ? '电脑' : '手机'}
+* 你现在用的是。。。${isPc.value ? '电脑' : '手机'}
 */
 
 /* 首先给所有元素加上过渡效果 */
@@ -53,7 +53,7 @@ body, html {
 /* 文字太近了 */
 .styleEditor {
   overflow: auto;
-  ${isPc ? `width: 48vw;height: 96vh;` : `width: 96vw;height: 48vh;` }
+  ${isPc.value ? `width: 48vw;height: 96vh;` : `width: 96vw;height: 48vh;` }
   border: 1px solid;
   font-size: 14px;
   line-height: 1.5;
@@ -74,9 +74,9 @@ html{
 }
 
 .styleEditor {
-  ${isPc ? `transform: rotateY(10deg) translateZ(-100px) ;
+  ${isPc.value ? `transform: rotateY(10deg) translateZ(-100px) ;
   -webkit-transform: rotateY(10deg) translateZ(-100px);` : `transform: rotateX(-10deg) translateZ(-100px);
-  -webkit-transform: rotateX(-10deg) translateZ(-100px);` } ${isPc ? '' : `
+  -webkit-transform: rotateX(-10deg) translateZ(-100px);` } ${isPc.value ? '' : `
   transform-origin: 50% 0% 0;
   -webkit-transform-origin: 50% 0% 0;` }
 }
@@ -88,17 +88,18 @@ html{
 
 /* 首先，来一个画板 */
 .heartWrapper {
-  ${isPc ? `width: 48vw;
+  ${isPc.value ? `width: 48vw;
   height: 96vh;` : `width: 96vw;
   height: 48vh;`}
+  margin: 0 auto 10px;
   position: relative;
   border: 1px solid;
   background-color: white;
-  ${isPc ?
-    `transform: rotateY(-10deg) translateZ(-100px);
-  -webkit-transform: rotateY(-10deg) translateZ(-100px);` :
-    `transform: rotateX(10deg) translateZ(-100px);
-  -webkit-transform: rotateX(10deg) translateZ(-100px);`}${isPc ? '' : `
+  ${isPc.value ?
+    `transform: rotateY(-10deg) translateZ(-50px);
+  -webkit-transform: rotateY(-10deg) translateZ(-50px);` :
+    `transform: rotateX(10deg) translateZ(-50px);
+  -webkit-transform: rotateX(10deg) translateZ(-50px);`}${isPc.value ? '' : `
   transform-origin: 50% 0% 0;
   -webkit-transform-origin: 50% 0% 0;`}
 }
@@ -193,16 +194,15 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-html,
-body {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+pre{
+  margin: 0;
+  padding: 0;
 }
-
 .styleEditor {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  box-sizing: border-box;
+  margin: 20px auto 0;
 }
 .rain {
   position: absolute;
