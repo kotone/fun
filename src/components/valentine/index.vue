@@ -7,6 +7,10 @@
       <div class="heart" @click="handleClickHeart"></div>
       <div class="heart bounce" @click="handleClickHeart"></div>
       <canvas id="canvas"></canvas>
+      <div class="brithday">
+        <img class="brith-text" :class="heartFlag ? 'fadeInUp' : ''" src="../../assets/birthday.png" alt="">
+        <div id="lottie" :class="heartFlag ? 'fadeIn' : ''"></div>
+      </div>
     </div>
     
   </div>
@@ -15,11 +19,14 @@
 <script setup>
 import Prism from 'prismjs'
 import { onMounted, ref, computed } from 'vue'
+import lottie from 'lottie-web'
 import Heart from './heart';
+import animationData from '../lottie/cake.json'
 
 const currentStyleCode = ref('')
 const styleWrapperRef = ref()
 const drawTextFlag = ref(false)
+const heartFlag = ref(false)
 
 const isPc = computed(() => {
   const userAgentInfo = navigator.userAgent
@@ -185,6 +192,15 @@ const handleClickHeart = () => {
   heart = new Heart(document.querySelector('#canvas'))
   setTimeout(() => {
     heart.render()
+    const anim = lottie.loadAnimation({
+      container: document.getElementById('lottie'),
+      renderer: 'canvas',
+      loop: true,
+      autoplay: true,
+      animationData: animationData
+    })
+    anim.play()
+    heartFlag.value = true
   }, 1000)
 }
 
@@ -195,10 +211,33 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-canvas {
+#canvas {
   position: absolute;
   width: 100%;
   height: 100%;
+}
+.brithday {
+  width: 100%;
+  height: 100%;
+}
+.brith-text {
+  position: absolute;
+  width: 50%;
+  left: 50%;
+  top: 39%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index: 2;
+}
+#lottie {
+  position: absolute;
+  width: 25%;
+  height: 25%;
+  left: 50%;
+  top: 59%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  opacity: 0;
 }
 
 @keyframes dissolve {
@@ -206,7 +245,6 @@ canvas {
     transform: scale(1) rotate(45deg);
     opacity: 1;
   }
-
   70% {
     transform: scale(0.1) rotate(45deg);
     opacity: 1;
@@ -221,11 +259,35 @@ canvas {
   }
 }
 
+.fadeInUp {
+  animation: fadeInUp 1s linear 1.2s forwards;
+}
+.fadeIn {
+  animation: fadeInUp 1s linear  forwards;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
 .dissolve {
-  animation: dissolve 1.2s  linear forwards;
+  animation: dissolve 1.2s linear forwards;
 }
 .heart{
-  z-index: 2;
+  z-index: 10;
 }
 pre {
   margin: 0;

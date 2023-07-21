@@ -4,15 +4,10 @@
 
 <script setup>
 import lottie from 'lottie-web'
-// import LottieCompress from 'lottie-compress'
 import { onMounted } from 'vue';
-import animationData from './banner-1.json'
+import animationData from './cake.json'
 
 onMounted (() => {
-  // const lottieCompress = new LottieCompress(animationData);
-  // const ret = await lottieCompress.execute()
-  // console.log(ret, 'ret')
-  let directionFlag = false
   const anim = lottie.loadAnimation({
     container: document.getElementById('lottie'),
     renderer: 'canvas',
@@ -20,14 +15,7 @@ onMounted (() => {
     autoplay: true,
     animationData: animationData
   })
-  const loop = () => {
-    anim.setDirection(directionFlag ? -1 : 1)
-    anim.play()
-  }
-  anim.addEventListener('complete', () => {
-    directionFlag = !directionFlag
-    loop()
-  })
+  anim.play()
 }) 
 </script>
 
