@@ -23,6 +23,8 @@ import lottie from 'lottie-web'
 import Heart from './heart';
 import animationData from '../lottie/cake.json'
 
+document.title = '给最爱的小宝贝'
+
 const currentStyleCode = ref('')
 const styleWrapperRef = ref()
 const drawTextFlag = ref(false)
@@ -47,6 +49,7 @@ const fullStyle = [
 * 你看这个页面。就是个什么也没有的网页。
 * 我的工作呢就是给这个页面加上东西。
 * 现在我带你一步一步给这个页面加上东西。
+* 最后会有惊喜哦！
 */
 
 /* 首先给所有元素加上过渡效果 */
@@ -92,7 +95,7 @@ body, html {
 .heartWrapper {
   ${isPc.value ? `width: 48vw;
   height: 96vh;` : `width: 96vw;
-  height: 42vh;`}
+  height: 43vh;`}
   margin: 10px auto;
   position: relative;
   border: 1px solid;
@@ -155,7 +158,7 @@ body, html {
 */
 `
 ]
-const interval = 1
+const interval = 40
 const progressiveShowStyle = async (n = 0) => {
   const styleDom = document.createElement('style')
   let textNode = document.createTextNode(currentStyleCode.value)
