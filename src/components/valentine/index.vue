@@ -144,11 +144,11 @@ body, html {
 }
 /*
 * Ok，完成！
-* 点击下爱心试试！
+* 点击下爱心试试。
 */
 `
 ]
-const interval = 40
+const interval = 1
 const progressiveShowStyle = async (n = 0) => {
   const styleDom = document.createElement('style')
   let textNode = document.createTextNode(currentStyleCode.value)

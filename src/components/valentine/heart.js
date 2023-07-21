@@ -8,11 +8,12 @@ var settings = {
     velocity: 26, // particle velocity in pixels/sec
     effect: 0.26, // play with this for a nice effect
     size: 26, // particle size in pixels
+    padding: [40, 50] // canvas padding
   },
 };
 
 /*
- * RequestAnimationFrame polyfill by Erik Möller
+ * RequestAnimationFrame polyfill
  */
 
 const requestAnimationFramePolyfill = () => {
@@ -197,12 +198,8 @@ const getImage = () => {
   // helper function to create the path
   const to = (t)  => {
     var point = pointOnHeart(t);
-    point.x =
-      settings.particles.size / 2 +
-      (point.x * settings.particles.size) / 350;
-    point.y =
-      settings.particles.size / 2 -
-      (point.y * settings.particles.size) / 350;
+    point.x = settings.particles.size / 2 + (point.x * settings.particles.size) / 350;
+    point.y = settings.particles.size / 2 - (point.y * settings.particles.size) / 350;
     return point;
   }
   // create the path
@@ -239,10 +236,9 @@ export default class Heart {
     requestAnimationFramePolyfill()
   }
 
-
   onResize() {
-    this.canvas.width = this.canvas.clientWidth;
-    this.canvas.height = this.canvas.clientHeight;
+    this.canvas.width = this.canvas.clientWidth + settings.particles.padding[0];
+    this.canvas.height = this.canvas.clientHeight + settings.particles.padding[1];
   }
   render() {
     // next animation frame
