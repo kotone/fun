@@ -4,18 +4,23 @@
       <pre v-html="currentStyleCode"></pre>
     </section>
     <div class="heartWrapper">
-      <div class="heart"></div>
-      <div class="heart bounce"></div>
+      <div class="heart" @click="handleClickHeart"></div>
+      <div class="heart bounce" @click="handleClickHeart"></div>
+      <canvas id="canvas"></canvas>
     </div>
+    
   </div>
 </template>
 
 <script setup>
 import Prism from 'prismjs'
 import { onMounted, ref, computed } from 'vue'
+import Heart from './heart';
 
 const currentStyleCode = ref('')
 const styleWrapperRef = ref()
+const drawTextFlag = ref(false)
+
 const isPc = computed(() => {
   const userAgentInfo = navigator.userAgent
   let Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod']
@@ -28,13 +33,13 @@ const isPc = computed(() => {
   }
   return flag
 })
+
 const fullStyle = [
 `/*
 * Hi。宝贝！
-* 这么久了。还没和宝贝说过我的工作呢！
-* 我是个前端工程师。俗称程序员。网页相关。
-* 如这个页面。就是个什么也没有的网页。
-* 我的工作就是给这种空白的页面加点儿东西。
+* 这个页面。就是个什么也没有的网页。
+* 我的工作呢说通俗点就是给这个页面加点东西。
+* 现在开始我们一步一步给这个页面加上东西。
 * 嗯。说起来手机和电脑还得区分一下。
 * 你现在用的是。。。${isPc.value ? '电脑' : '手机'}
 */
@@ -66,12 +71,6 @@ body, html {
 .token.punctuation{ color: yellow }
 .token.function{ color: rgb(42,161,152) }
 .token.comment{ color: rgb(177,177,177) }
-
-/* 加个 3D 效果 */
-html{
-  perspective: 1000px;
-  -webkit-perspective: 1000px;
-}
 
 .styleEditor {
   ${isPc.value ? `transform: rotateY(10deg) translateZ(-100px) ;
@@ -160,11 +159,11 @@ html{
 }
 /*
 * Ok，完成！
-* 宝贝，七夕快乐！
+* 点击下爱心试试！
 */
 `
 ]
-const interval = 30
+const interval = 60
 const progressiveShowStyle = async (n = 0) => {
   const styleDom = document.createElement('style')
   let textNode = document.createTextNode(currentStyleCode.value)
@@ -186,15 +185,64 @@ const progressiveShowStyle = async (n = 0) => {
       styleWrapperRef.value.scrollTop = 100000
     }, interval)
   })
-  return showStyle(0)
+  return showStyle(n)
 }
+
+const handleClickHeart = () => {
+  if (!drawTextFlag.value) return
+  let heart = null
+  const doms = document.querySelectorAll('.heart')
+  doms.forEach(dom => {
+    dom.classList.remove('bounce')
+    dom.classList.add('dissolve')
+  })
+  if (heart) return
+  setTimeout(() => {
+    heart = new Heart(document.querySelector('#canvas'))
+    heart.render()
+  }, 1000)
+}
+
 onMounted(async () => {
   await progressiveShowStyle(0)
+  drawTextFlag.value = true
 })
 </script>
 
 <style scoped>
-pre{
+canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes dissolve {
+  0% {
+    transform: scale(1) rotate(45deg);
+    opacity: 1;
+  }
+
+  70% {
+    transform: scale(0.1) rotate(45deg);
+    opacity: 1;
+  }
+  95% {
+    transform: scale(0.1) rotate(45deg) translate(-600px, -600px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.1) rotate(45deg) translate(-600px, -600px);
+    opacity: 0;
+  }
+}
+
+.dissolve {
+  animation: dissolve 1.2s  linear forwards;
+}
+.heart{
+  z-index: 2;
+}
+pre {
   margin: 0;
   padding: 0;
 }
@@ -203,9 +251,6 @@ pre{
   -webkit-backface-visibility: hidden;
   box-sizing: border-box;
   margin: 20px auto 0;
-}
-.rain {
-  position: absolute;
 }
 </style>
 
