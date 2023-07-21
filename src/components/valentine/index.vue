@@ -1,5 +1,5 @@
 <template>
-  <div :style="{display: isPc ? 'flex' : ''}">
+  <div :style="{display: isPc ? 'flex' : ''}" class="wrap">
     <section class="styleEditor" ref="styleWrapperRef">
       <pre v-html="currentStyleCode"></pre>
     </section>
@@ -37,9 +37,9 @@ const isPc = computed(() => {
 const fullStyle = [
 `/*
 * Hi。宝贝！
-* 这个页面。就是个什么也没有的网页。
-* 我的工作呢说通俗点就是给这个页面加点东西。
-* 现在开始我们一步一步给这个页面加上东西。
+* 你看这个页面。就是个什么也没有的网页。
+* 我的工作呢就是给这个页面加上东西。
+* 现在我带你一步一步给这个页面加上东西。
 * 嗯。说起来手机和电脑还得区分一下。
 * 你现在用的是。。。${isPc.value ? '电脑' : '手机'}
 */
@@ -48,6 +48,7 @@ const fullStyle = [
 * {
   -webkit-transition: all .5s;
   transition: all .5s;
+  will-change: auto;
 }
 /* 白色背景太单调了。来点背景 */
 body, html {
@@ -73,11 +74,8 @@ body, html {
 .token.comment{ color: rgb(177,177,177) }
 
 .styleEditor {
-  ${isPc.value ? `transform: rotateY(10deg) translateZ(-100px) ;
-  -webkit-transform: rotateY(10deg) translateZ(-100px);` : `transform: rotateX(-10deg) translateZ(-100px);
-  -webkit-transform: rotateX(-10deg) translateZ(-100px);` } ${isPc.value ? '' : `
   transform-origin: 50% 0% 0;
-  -webkit-transform-origin: 50% 0% 0;` }
+  -webkit-transform-origin: 50% 0% 0;
 }
 
 /*
@@ -89,18 +87,11 @@ body, html {
 .heartWrapper {
   ${isPc.value ? `width: 48vw;
   height: 96vh;` : `width: 96vw;
-  height: 48vh;`}
-  margin: 0 auto 10px;
+  height: 42vh;`}
+  margin: 10px auto;
   position: relative;
   border: 1px solid;
   background-color: white;
-  ${isPc.value ?
-    `transform: rotateY(-10deg) translateZ(-50px);
-  -webkit-transform: rotateY(-10deg) translateZ(-50px);` :
-    `transform: rotateX(10deg) translateZ(-50px);
-  -webkit-transform: rotateX(10deg) translateZ(-50px);`}${isPc.value ? '' : `
-  transform-origin: 50% 0% 0;
-  -webkit-transform-origin: 50% 0% 0;`}
 }
 
 /* 画一个方块，当左心室和右心室 */
@@ -127,7 +118,6 @@ body, html {
   left: -38px;
   top: 1px;
 }
-
 /* 再画上右心房 */
 .heart::after {
   content: '';
@@ -139,20 +129,17 @@ body, html {
   right: -1px;
   top: -38px;
 }
-
 /* 太单调了，让心跳动起来 */
 @keyframes throb {
   0% {
     transform: scale(1) rotate(45deg);
     opacity: 1;
   }
-
   100% {
     transform: scale(1.65) rotate(45deg);
     opacity: 0
   }
 }
-
 .bounce {
   opacity: 0.2;
   animation: throb 1s infinite linear;
@@ -163,7 +150,7 @@ body, html {
 */
 `
 ]
-const interval = 60
+const interval = 40
 const progressiveShowStyle = async (n = 0) => {
   const styleDom = document.createElement('style')
   let textNode = document.createTextNode(currentStyleCode.value)
@@ -197,8 +184,8 @@ const handleClickHeart = () => {
     dom.classList.add('dissolve')
   })
   if (heart) return
+  heart = new Heart(document.querySelector('#canvas'))
   setTimeout(() => {
-    heart = new Heart(document.querySelector('#canvas'))
     heart.render()
   }, 1000)
 }
