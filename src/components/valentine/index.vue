@@ -159,7 +159,7 @@ body, html {
 */
 `
 ]
-const interval = 1
+const interval = 40
 const progressiveShowStyle = async (n = 0) => {
   const styleDom = document.createElement('style')
   let textNode = document.createTextNode(currentStyleCode.value)
