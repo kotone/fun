@@ -29,6 +29,7 @@ const currentStyleCode = ref('')
 const styleWrapperRef = ref()
 const drawTextFlag = ref(false)
 const heartFlag = ref(false)
+const clickFlag = ref(false)
 
 const isPc = computed(() => {
   const userAgentInfo = navigator.userAgent
@@ -158,7 +159,7 @@ body, html {
 */
 `
 ]
-const interval = 40
+const interval = 1
 const progressiveShowStyle = async (n = 0) => {
   const styleDom = document.createElement('style')
   let textNode = document.createTextNode(currentStyleCode.value)
@@ -184,24 +185,25 @@ const progressiveShowStyle = async (n = 0) => {
 }
 
 const handleClickHeart = () => {
-  if (!drawTextFlag.value) return
+  if (!drawTextFlag.value || clickFlag.value) return
+  clickFlag.value = true
   let heart = null
+  let anim = null
   const doms = document.querySelectorAll('.heart')
   doms.forEach(dom => {
     dom.classList.remove('bounce')
     dom.classList.add('dissolve')
   })
-  if (heart) return
   heart = new Heart(document.querySelector('#canvas'))
+  anim = lottie.loadAnimation({
+    container: document.getElementById('lottie'),
+    renderer: 'canvas',
+    loop: true,
+    autoplay: true,
+    animationData: animationData
+  })
   setTimeout(() => {
     heart.render()
-    const anim = lottie.loadAnimation({
-      container: document.getElementById('lottie'),
-      renderer: 'canvas',
-      loop: true,
-      autoplay: true,
-      animationData: animationData
-    })
     anim.play()
     heartFlag.value = true
   }, 1000)
