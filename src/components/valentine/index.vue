@@ -11,7 +11,7 @@
         <img class="brith-text" :class="heartFlag ? 'fadeInUp' : ''" src="../../assets/birthday.png" alt="">
         <div id="lottie" :class="heartFlag ? 'fadeIn' : ''"></div>
       </div>
-      <audio style="visibility: hidden;" src="/brithday.mp3" loop="loop" ref="audioRef"></audio>
+      <audio style="visibility: hidden;" src="./assets/brithday.mp3" loop="loop" ref="audioRef"></audio>
     </div>
     
   </div>
