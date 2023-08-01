@@ -11,6 +11,7 @@
         <img class="brith-text" :class="heartFlag ? 'fadeInUp' : ''" src="../../assets/birthday.png" alt="">
         <div id="lottie" :class="heartFlag ? 'fadeIn' : ''"></div>
       </div>
+      <audio style="visibility: hidden;" src="/brithday.mp3" loop="loop" ref="audioRef"></audio>
     </div>
     
   </div>
@@ -30,6 +31,7 @@ const styleWrapperRef = ref()
 const drawTextFlag = ref(false)
 const heartFlag = ref(false)
 const clickFlag = ref(false)
+const audioRef = ref()
 
 const isPc = computed(() => {
   const userAgentInfo = navigator.userAgent
@@ -206,6 +208,7 @@ const handleClickHeart = () => {
     heart.render()
     anim.play()
     heartFlag.value = true
+    audioRef.value.play()
   }, 1000)
 }
 
